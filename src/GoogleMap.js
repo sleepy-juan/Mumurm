@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import GoogleMapReact from 'google-map-react';
- 
-const AnyReactComponent = ({ text }) => <div>{text}</div>;
+import Pin from './Pin.js';
+import { Card, Icon } from 'semantic-ui-react';
 
 class SimpleMap extends Component {
   static defaultProps = {
@@ -64,7 +64,7 @@ class SimpleMap extends Component {
           {
             this.state.locations.map((value, i) => {
               return (
-                <AnyReactComponent
+                <Pin
                   lng={value.lng}
                   lat={value.lat}
                   text={value.text}
@@ -74,7 +74,16 @@ class SimpleMap extends Component {
             })
           }
         </GoogleMapReact>
-      </div>
+
+        <Card style={{position:"absolute", top: 0, left: 20}}>
+          <Card.Content header="KAIST" />
+          <Card.Content description="KAIST is blahblah~~" />
+          <Card.Content extra>
+            <Icon name="user" />
+            4 Friends
+          </Card.Content>
+        </Card>
+        </div>
     );
   }
 }
