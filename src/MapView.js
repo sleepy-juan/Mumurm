@@ -4,7 +4,7 @@
 
     Author @ Juan Lee (juanlee@kaist.ac.kr)
 */
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import GoogleMapReact from 'google-map-react';
 
 /* import Data Handling Module for JSON */
@@ -91,7 +91,12 @@ class MapView extends Component {
                 {
                     this.state.locations.map((value, i) => {
                         return (
-                            <Label lat={value.lat} lng={value.lng} as='a' color='teal' tag>
+                            <Label onClick={()=>{
+                                this.setState({
+                                    selected: value,
+                                    clicked: false,
+                                })
+                            }} lat={value.lat} lng={value.lng} as='a' color='teal' tag>
                                 {value.how_long}
                             </Label>
                         );
@@ -109,13 +114,35 @@ class MapView extends Component {
 
                 {
                     this.state.clicked ?
-                    <Card style={{position:"absolute", top: 10, left: 20, padding:10}}>
-                        <Card.Content header="Restful?" />
-                        <Card.Content description="Please tell us your restful place!" />
-                        <Input onChange={this._saveLocation} icon='location arrow' iconPosition='left' placeholder={`Where are you? (${Math.floor(this.state.clicked.lat)}, ${Math.floor(this.state.clicked.lng)})`}/>
-                        <Input onChange={this._saveTime} icon='clock outline' iconPosition='left' placeholder='How long?' style={{marginTop: 4}} />
-                        <Button onClick={this._onAddLabel} basic style={{marginTop: 4}}><Icon name="tag"/>Submit!</Button>
-                    </Card> : null
+                    <Fragment>
+                        <Card style={{position:"absolute", top: 10, left: 20, padding:10}}>
+                            <Card.Content header="Restful?"/>
+                            <Card.Content description="Please tell us your restful place!" />
+                            <Input onChange={this._saveLocation} icon='location arrow' iconPosition='left' placeholder={`Where are you? (${Math.floor(this.state.clicked.lat)}, ${Math.floor(this.state.clicked.lng)})`}/>
+                            <Input onChange={this._saveTime} icon='clock outline' iconPosition='left' placeholder='How long?' style={{marginTop: 4}} />
+                            <Button onClick={this._onAddLabel} basic style={{marginTop: 4}}><Icon name="tag"/>Submit!</Button>
+                        </Card>
+                        <Icon onClick={()=>{
+                            this.setState({
+                                clicked: false,
+                            })
+                        }} color='grey' name="close" style={{position:"absolute", top: 45, left: 270}} />
+                    </Fragment> : null
+                }
+
+                {
+                    this.state.selected ?
+                    <Fragment>
+                        <Card style={{position:"absolute", top: 10, right: 20, padding:10}}>
+                            <Card.Content header={this.state.selected.where}/>
+                            <Card.Content description={this.state.selected.how_long}/>
+                        </Card>
+                        <Icon onClick={()=>{
+                            this.setState({
+                                selected: false,
+                            })
+                        }} color='grey' name="close" style={{position:"absolute", top: 45, right: 30}} />
+                    </Fragment> : null
                 }
             </div>
         );
