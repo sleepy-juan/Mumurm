@@ -1,6 +1,6 @@
 {
-  "short_name": "Mumurm",
-  "name": "Mumurm - find a resting place for a while",
+  "short_name": "React App",
+  "name": "Create React App Sample",
   "icons": [
     {
       "src": "favicon.ico",

@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import SimpleMap from './GoogleMap';
+import MapView from './MapView.js';
 
 class App extends Component {
   render() {
     return (
       <div className="App">
-        <SimpleMap />
+        <MapView />
       </div>
     );
   }
