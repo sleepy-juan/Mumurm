@@ -31,6 +31,8 @@ class MapView extends Component {
     state = {
         locations: [],          // array of locations to mark
         clicked: false,
+        selected: false,
+        user: null,
     }
 
     constructor(props){
@@ -42,6 +44,7 @@ class MapView extends Component {
         this._onAddLabel = this._onAddLabel.bind(this);
         this._disableSelected = this._disableSelected.bind(this);
         this._disableClicked = this._disableClicked.bind(this);
+        this._onFinishedLogin = this._onFinishedLogin.bind(this);
     }
 
     // before mounting
@@ -79,7 +82,8 @@ class MapView extends Component {
                 lat: this.state.clicked.lat,
                 lng: this.state.clicked.lng,
                 where: this.location,
-                how_long: this.time
+                how_long: this.time,
+                author: this.state.user
             });
 
             Database.get("locations").putJSON(result)
@@ -105,14 +109,16 @@ class MapView extends Component {
     }
 
     _onFinishedLogin = (email) => {
-        alert(email);
+        this.setState({
+            user: email
+        });
     }
 
     // render
     render() {
         return (
             <div style={{ height: '100vh', width: '100%' }}>
-                <SignIn _onFinished = {this._onFinishedLogin} />
+                <SignIn open={true} _onFinished = {this._onFinishedLogin} />
 
                 <GoogleMapReact
                 onClick = {this._onClick}

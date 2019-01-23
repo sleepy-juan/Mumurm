@@ -14,6 +14,9 @@ class SignIn extends Component {
     super(props);
 
     this._onButtonClicked = this._onButtonClicked.bind(this);
+    this.setState({
+      open: this.props.state
+    });
   }
 
   _onButtonClicked = () => {
