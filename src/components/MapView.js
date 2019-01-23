@@ -4,13 +4,15 @@
 
     Author @ Juan Lee (juanlee@kaist.ac.kr)
 */
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import GoogleMapReact from 'google-map-react';
 
 /* import Data Handling Module for JSON */
-import Database from './Database.js';
+import Database from '../utils/Database.js';
 
-import { Card, Label, Input, Button, Icon } from "semantic-ui-react";
+import { Label } from "semantic-ui-react";
+import AddLabel from './AddLabel.js';
+import ShowInfo from './ShowInfo.js';
 
 // class MapView
 class MapView extends Component {
@@ -28,6 +30,17 @@ class MapView extends Component {
     state = {
         locations: [],          // array of locations to mark
         clicked: false,
+    }
+
+    constructor(props){
+        super(props);
+
+        this._onClick = this._onClick.bind(this);
+        this._saveLocation = this._saveLocation.bind(this);
+        this._saveTime = this._saveTime.bind(this);
+        this._onAddLabel = this._onAddLabel.bind(this);
+        this._disableSelected = this._disableSelected.bind(this);
+        this._disableClicked = this._disableClicked.bind(this);
     }
 
     // before mounting
@@ -78,6 +91,18 @@ class MapView extends Component {
         });
     }
 
+    _disableSelected = () => {
+        this.setState({
+            selected: false
+        });
+    }
+
+    _disableClicked = () => {
+        this.setState({
+            clicked: false
+        });
+    }
+
     // render
     render() {
         return (
@@ -112,38 +137,8 @@ class MapView extends Component {
                 }
                 </GoogleMapReact>
 
-                {
-                    this.state.clicked ?
-                    <Fragment>
-                        <Card style={{position:"absolute", top: 10, left: 20, padding:10}}>
-                            <Card.Content header="Restful?"/>
-                            <Card.Content description="Please tell us your restful place!" />
-                            <Input onChange={this._saveLocation} icon='location arrow' iconPosition='left' placeholder={`Where are you? (${Math.floor(this.state.clicked.lat)}, ${Math.floor(this.state.clicked.lng)})`}/>
-                            <Input onChange={this._saveTime} icon='clock outline' iconPosition='left' placeholder='How long?' style={{marginTop: 4}} />
-                            <Button onClick={this._onAddLabel} basic style={{marginTop: 4}}><Icon name="tag"/>Submit!</Button>
-                        </Card>
-                        <Icon onClick={()=>{
-                            this.setState({
-                                clicked: false,
-                            })
-                        }} color='grey' name="close" style={{position:"absolute", top: 45, left: 270}} />
-                    </Fragment> : null
-                }
-
-                {
-                    this.state.selected ?
-                    <Fragment>
-                        <Card style={{position:"absolute", top: 10, right: 20, padding:10}}>
-                            <Card.Content header={this.state.selected.where}/>
-                            <Card.Content description={this.state.selected.how_long}/>
-                        </Card>
-                        <Icon onClick={()=>{
-                            this.setState({
-                                selected: false,
-                            })
-                        }} color='grey' name="close" style={{position:"absolute", top: 45, right: 30}} />
-                    </Fragment> : null
-                }
+                { this.state.clicked ? <AddLabel _saveLocation={this._saveLocation} _saveTime={this._saveTime} _onAddLabel={this._onAddLabel} _disableClicked={this._disableClicked} clicked={this.state.clicked} x={20} y={10} /> : null }
+                { this.state.selected ? <ShowInfo _disableSelected = {this._disableSelected} selected={this.state.selected} x={20} y={10} /> : null }
             </div>
         );
     }
