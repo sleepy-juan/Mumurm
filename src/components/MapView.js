@@ -45,7 +45,7 @@ class MapView extends Component {
 
     // before mounting
     componentWillMount(){
-        Database.getJSON([])
+        Database.get("locations").getJSON([])
         .then(result => {
             this.setState({
                 locations: result
@@ -55,10 +55,10 @@ class MapView extends Component {
 
     // function _onClick: {x, y, lat, lng, event} -> void
     // - handle click event on map
-    _onClick = async ({lat, lng}) => {
+    _onClick = async ({x, y, lat, lng}) => {
         this.setState({
             clicked: {
-                lat, lng
+                lat, lng, x, y
             }
         });
     }
@@ -72,7 +72,7 @@ class MapView extends Component {
     }
 
     _onAddLabel = () => {
-        Database.getJSON([])
+        Database.get("locations").getJSON([])
         .then(result => {
             result.push({
                 lat: this.state.clicked.lat,
@@ -81,7 +81,7 @@ class MapView extends Component {
                 how_long: this.time
             });
 
-            Database.putJSON(result)
+            Database.get("locations").putJSON(result)
             .then(()=>{
                 this.setState({
                     locations: result,
@@ -137,7 +137,7 @@ class MapView extends Component {
                 }
                 </GoogleMapReact>
 
-                { this.state.clicked ? <AddLabel _saveLocation={this._saveLocation} _saveTime={this._saveTime} _onAddLabel={this._onAddLabel} _disableClicked={this._disableClicked} clicked={this.state.clicked} x={20} y={10} /> : null }
+                { this.state.clicked ? <AddLabel _saveLocation={this._saveLocation} _saveTime={this._saveTime} _onAddLabel={this._onAddLabel} _disableClicked={this._disableClicked} clicked={this.state.clicked} x={this.state.clicked.x} y={this.state.clicked.y} /> : null }
                 { this.state.selected ? <ShowInfo _disableSelected = {this._disableSelected} selected={this.state.selected} x={20} y={10} /> : null }
             </div>
         );
