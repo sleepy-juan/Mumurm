@@ -13,6 +13,7 @@ import Database from '../utils/Database.js';
 import { Label } from "semantic-ui-react";
 import AddLabel from './AddLabel.js';
 import ShowInfo from './ShowInfo.js';
+import SignIn from './SignIn.js';
 
 // class MapView
 class MapView extends Component {
@@ -103,10 +104,16 @@ class MapView extends Component {
         });
     }
 
+    _onFinishedLogin = (email) => {
+        alert(email);
+    }
+
     // render
     render() {
         return (
             <div style={{ height: '100vh', width: '100%' }}>
+                <SignIn _onFinished = {this._onFinishedLogin} />
+
                 <GoogleMapReact
                 onClick = {this._onClick}
                 bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_MAP_API_KEY }}
