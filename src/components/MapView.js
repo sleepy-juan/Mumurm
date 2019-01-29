@@ -10,7 +10,7 @@ import GoogleMapReact from 'google-map-react';
 /* import Data Handling Module for JSON */
 import Database from '../utils/Database.js';
 
-import { Label, Rating } from "semantic-ui-react";
+import { Label } from "semantic-ui-react";
 import AddLabel from './AddLabel.js';
 import ShowInfo from './ShowInfo.js';
 import SignIn from './SignIn.js';
