@@ -10,10 +10,12 @@ import GoogleMapReact from 'google-map-react';
 /* import Data Handling Module for JSON */
 import Database from '../utils/Database.js';
 
-import { Label } from "semantic-ui-react";
+import { Label, Rating } from "semantic-ui-react";
 import AddLabel from './AddLabel.js';
 import ShowInfo from './ShowInfo.js';
 import SignIn from './SignIn.js';
+
+
 
 // class MapView
 class MapView extends Component {
@@ -41,12 +43,12 @@ class MapView extends Component {
         this._onClick = this._onClick.bind(this);
         this._saveLocation = this._saveLocation.bind(this);
         this._saveTime = this._saveTime.bind(this);
+        this._saveRating = this._saveRating.bind(this);
         this._onAddLabel = this._onAddLabel.bind(this);
         this._disableSelected = this._disableSelected.bind(this);
         this._disableClicked = this._disableClicked.bind(this);
         this._onFinishedLogin = this._onFinishedLogin.bind(this);
-    }
-
+    } 
     // before mounting
     componentWillMount(){
         Database.get("locations").getJSON([])
@@ -71,6 +73,9 @@ class MapView extends Component {
         this.location = e.target.value;
     }
 
+    _saveRating = e => {
+        this.rating1 = e.target.value;
+    }
     _saveTime = e => {
         this.time = e.target.value;
     }
@@ -83,6 +88,7 @@ class MapView extends Component {
                 lng: this.state.clicked.lng,
                 where: this.location,
                 how_long: this.time,
+                how_good:this.rating1,
                 author: this.state.user
             });
 
@@ -150,7 +156,7 @@ class MapView extends Component {
                 }
                 </GoogleMapReact>
 
-                { this.state.clicked ? <AddLabel _saveLocation={this._saveLocation} _saveTime={this._saveTime} _onAddLabel={this._onAddLabel} _disableClicked={this._disableClicked} clicked={this.state.clicked} x={this.state.clicked.x} y={this.state.clicked.y} /> : null }
+                { this.state.clicked ? <AddLabel _saveRating={this._saveRating} _saveLocation={this._saveLocation} _saveTime={this._saveTime} _onAddLabel={this._onAddLabel} _disableClicked={this._disableClicked} clicked={this.state.clicked} x={this.state.clicked.x} y={this.state.clicked.y} /> : null }
                 { this.state.selected ? <ShowInfo _disableSelected = {this._disableSelected} selected={this.state.selected} x={20} y={10} /> : null }
             </div>
         );
