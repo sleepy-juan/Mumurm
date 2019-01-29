@@ -2,8 +2,6 @@ import React, { Component, Fragment} from 'react';
 import { Card, Input, Button, Icon, Rating} from "semantic-ui-react";
 //import {MyRating} from "Rating.js";
 
-
-
 class AddLabel extends Component{
     
     render(){

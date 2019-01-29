@@ -73,8 +73,8 @@ class MapView extends Component {
         this.location = e.target.value;
     }
 
-    _saveRating = e => {
-        this.rating1 = e.target.value;
+    _saveRating = (e, {rating, maxRate}) => {
+        this.rating1 = rating;
     }
     _saveTime = e => {
         this.time = e.target.value;
