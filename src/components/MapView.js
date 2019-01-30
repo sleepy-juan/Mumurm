@@ -35,6 +35,7 @@ class MapView extends Component {
         clicked: false,
         selected: false,
         user: null,
+        auth: false
     }
 
     constructor(props){
@@ -48,6 +49,17 @@ class MapView extends Component {
         this._disableSelected = this._disableSelected.bind(this);
         this._disableClicked = this._disableClicked.bind(this);
         this._onFinishedLogin = this._onFinishedLogin.bind(this);
+
+        var json = JSON.parse(localStorage.getItem("auth"));
+        if(json){
+            Database.get("users").get(json.username).getJSON({profile:{}, taken:[]})
+            .then(user => {
+                this.setState({
+                    user,
+                    auth: true
+                });
+            });
+        }
     } 
     // before mounting
     componentWillMount(){
@@ -124,7 +136,7 @@ class MapView extends Component {
     render() {
         return (
             <div style={{ height: '100vh', width: '100%' }}>
-                <SignIn open={true} _onFinished = {this._onFinishedLogin} />
+                {this.state.auth? null : <SignIn _onFinished = {this._onFinishedLogin} />}
 
                 <GoogleMapReact
                 onClick = {this._onClick}
